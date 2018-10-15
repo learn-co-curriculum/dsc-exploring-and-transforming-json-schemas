@@ -1,7 +1,7 @@
 
 # Exploring and Transforming JSON Schemas
 
-# Introduction
+## Introduction
 
 In this lesson, we'll formalize how to explore a JSON file whose structure and schema is unknown to you. This often happens in practice when you are handed a file or stumble upon one with little documentation.
 
@@ -25,6 +25,8 @@ import json
 f = open('output.json')
 data = json.load(f)
 ```
+
+## Exploring JSON Schemas  
 
 Recall that JSON files have a nested structure. The most granular level of raw data will be individual numbers (float/int) and strings. These in turn will be stored in the equivalent of python lists and dictionaries. Because these can be combined, we'll start exploring by checking the type of our root object, and start mapping out the hierarchy of the json file.
 
@@ -155,6 +157,7 @@ data['albums']['items'][0].keys()
 
 
 
+## Converting JSON to Alternative Data Formats
 As you can see, the nested structure continues on: our list of items is only 2 long, but each item is a dictionary with a large number of key value pairs. To add context, this is actually the data that we're probably after from this file: its that data providing details about what albums were recently released. The entirety of the JSON file itself is an example response from the Spotify API (more on that soon). So while the larger JSON provides us with many details about the response itself, our primary interest may simply be the list of dictionaries within data -> albums -> items. Let's preview this and see if we can transform it into our usual Pandas DataFrame.
 
 
