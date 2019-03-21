@@ -3,7 +3,7 @@
 
 ## Introduction
 
-In this lesson, we'll formalize how to explore a JSON file whose structure and schema is unknown to you. This often happens in practice when you are handed a file or stumble upon one with little documentation.
+In this lesson, you'll formalize your knowledge for how to explore a JSON file whose structure and schema is unknown to you. This often happens in practice when you are handed a file or stumble upon one with little documentation.
 
 ## Objectives
 You will be able to:
@@ -13,7 +13,7 @@ You will be able to:
 
 ## Loading the JSON file
 
-As before, we begin by importing the json package, opening a file with python's built in function, and then loading that data in.
+As before, you'll begin by importing the json package, opening a file with python's built in function, and then loading that data in.
 
 
 ```python
@@ -28,7 +28,7 @@ data = json.load(f)
 
 ## Exploring JSON Schemas  
 
-Recall that JSON files have a nested structure. The most granular level of raw data will be individual numbers (float/int) and strings. These in turn will be stored in the equivalent of python lists and dictionaries. Because these can be combined, we'll start exploring by checking the type of our root object, and start mapping out the hierarchy of the json file.
+Recall that JSON files have a nested structure. The most granular level of raw data will be individual numbers (float/int) and strings. These in turn will be stored in the equivalent of python lists and dictionaries. Because these can be combined, you'll start exploring by checking the type of our root object, and start mapping out the hierarchy of the json file.
 
 
 ```python
@@ -56,7 +56,7 @@ data.keys()
 
 
 
-In this case, there is only a single key, 'albums', so we'll continue on down the pathway exploring and mapping out the hierarchy. Once again, let's start by checking the type of this nested data structure.
+In this case, there is only a single key, 'albums', so you'll continue on down the pathway exploring and mapping out the hierarchy. Once again, start by checking the type of this nested data structure.
 
 
 ```python
@@ -70,7 +70,7 @@ type(data['albums'])
 
 
 
-Another dictionary! So thus far, we have a dictionary within a dictionary. Once again, let's investigate what's within this dictionary (JSON calls the equivalent of Python dictionaries Objects.)
+Another dictionary! So thus far, you have a dictionary within a dictionary. Once again, investigate what's within this dictionary (JSON calls the equivalent of Python dictionaries Objects.)
 
 
 ```python
@@ -85,9 +85,9 @@ data['albums'].keys()
 
 
 At this point, things are starting to look something like this: 
-<img src="json_diagram1.JPG" width=550>
+<img src="images/json_diagram1.JPG" width=550>
 
-At this point, if we were to continue checking individual data types, we have a lot to go through. To simplify this, let's use a for loop:
+At this point, if you were to continue checking individual data types, you have a lot to go through. To simplify this, you can use a for loop:
 
 
 ```python
@@ -105,7 +105,7 @@ for key in data['albums'].keys():
 
 
 Adding this to our diagram we now have something like this:
-<img src="json_diagram2.JPG" width=550>
+<img src="images/json_diagram2.JPG" width=550>
 
 Normally, you may not draw out the full diagram as done here, but its a useful picture to have in mind, and in complex schemas, can be useful to map out. At this point, you also probably have a good idea of the general structure of the json file. However, there is still the list of items, which we could investigate further:
 
@@ -158,7 +158,7 @@ data['albums']['items'][0].keys()
 
 
 ## Converting JSON to Alternative Data Formats
-As you can see, the nested structure continues on: our list of items is only 2 long, but each item is a dictionary with a large number of key value pairs. To add context, this is actually the data that we're probably after from this file: its that data providing details about what albums were recently released. The entirety of the JSON file itself is an example response from the Spotify API (more on that soon). So while the larger JSON provides us with many details about the response itself, our primary interest may simply be the list of dictionaries within data -> albums -> items. Let's preview this and see if we can transform it into our usual Pandas DataFrame.
+As you can see, the nested structure continues on: our list of items is only 2 long, but each item is a dictionary with a large number of key value pairs. To add context, this is actually the data that you're probably after from this file: its that data providing details about what albums were recently released. The entirety of the JSON file itself is an example response from the Spotify API (more on that soon). So while the larger JSON provides us with many details about the response itself, our primary interest may simply be the list of dictionaries within data -> albums -> items. Preview this and see if you can transform it into our usual Pandas DataFrame.
 
 
 ```python
@@ -239,7 +239,7 @@ df.head()
 
 
 
-Not bad, although you can see some of our cells still have nested data within them. The artists column in particular might be nice to break apart. We could do this from the original json, but at this point, let's work with our DataFrame. First, let's preview an entry.
+Not bad, although you can see some of our cells still have nested data within them. The artists column in particular might be nice to break apart. You could do this from the original json, but at this point, let's work with our DataFrame. Preview an entry.
 
 
 ```python
@@ -258,7 +258,7 @@ df.artists.iloc[0]
 
 
 
-As you can see, we have a list of dictionaries, in this case with only one entry as theirs only one artist. We can imagine wanting to transform this for an artist1, artist2,...columns. This will be a great exercise in the upcoming lab to practice your Pandas skills and lambda functions!
+As you can see, you have a list of dictionaries, in this case with only one entry as theirs only one artist. You can imagine wanting to transform this for an artist1, artist2,...columns. This will be a great exercise in the upcoming lab to practice your Pandas skills and lambda functions!
 
 ## Summary
 
