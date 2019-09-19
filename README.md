@@ -13,7 +13,7 @@ You will be able to:
 
 ## Loading the JSON file
 
-As before, you'll begin by importing the json package, opening a file with python's built in function, and then loading that data in.
+As before, you'll begin by importing the `json` package, opening a file with python's built-in function, and then loading that data in.
 
 
 ```python
@@ -28,7 +28,7 @@ data = json.load(f)
 
 ## Exploring JSON Schemas  
 
-Recall that JSON files have a nested structure. The most granular level of raw data will be individual numbers (float/int) and strings. These in turn will be stored in the equivalent of python lists and dictionaries. Because these can be combined, you'll start exploring by checking the type of our root object, and start mapping out the hierarchy of the json file.
+Recall that JSON files have a nested structure. The most granular level of raw data will be individual numbers (float/int) and strings. These, in turn, will be stored in the equivalent of python lists and dictionaries. Because these can be combined, you'll start exploring by checking the type of our root object and start mapping out the hierarchy of the JSON file.
 
 
 ```python
@@ -107,7 +107,7 @@ for key in data['albums'].keys():
 Adding this to our diagram we now have something like this:
 <img src="images/json_diagram2.JPG" width=550>
 
-Normally, you may not draw out the full diagram as done here, but its a useful picture to have in mind, and in complex schemas, can be useful to map out. At this point, you also probably have a good idea of the general structure of the json file. However, there is still the list of items, which we could investigate further:
+Normally, you may not draw out the full diagram as done here, but it's a useful picture to have in mind, and in complex schemas, can be useful to map out. At this point, you also probably have a good idea of the general structure of the JSON file. However, there is still the list of items, which we could investigate further:
 
 
 ```python
@@ -158,7 +158,7 @@ data['albums']['items'][0].keys()
 
 
 ## Converting JSON to Alternative Data Formats
-As you can see, the nested structure continues on: our list of items is only 2 long, but each item is a dictionary with a large number of key value pairs. To add context, this is actually the data that you're probably after from this file: its that data providing details about what albums were recently released. The entirety of the JSON file itself is an example response from the Spotify API (more on that soon). So while the larger JSON provides us with many details about the response itself, our primary interest may simply be the list of dictionaries within data -> albums -> items. Preview this and see if you can transform it into our usual Pandas DataFrame.
+As you can see, the nested structure continues on: our list of items is only 2 long, but each item is a dictionary with a large number of key-value pairs. To add context, this is actually the data that you're probably after from this file: its that data providing details about what albums were recently released. The entirety of the JSON file itself is an example response from the Spotify API (more on that soon). So while the larger JSON provides us with many details about the response itself, our primary interest may simply be the list of dictionaries within data -> albums -> items. Preview this and see if you can transform it into our usual Pandas DataFrame.
 
 
 ```python
@@ -262,4 +262,4 @@ As you can see, you have a list of dictionaries, in this case with only one entr
 
 ## Summary
 
-JSON files often have a deep nested structure that can require initial investigation into the schema hierarchy in order to become familiar with how data is stored. Once done, it is important to identify what data your are looking to extract and then develop a strategy to transform it into your standard workflow (which generally will be dependent on Pandas DataFrames or NumPy arrays).
+JSON files often have a deep, nested structure that can require initial investigation into the schema hierarchy in order to become familiar with how data is stored. Once done, it is important to identify what data you are looking to extract and then develop a strategy to transform it into your standard workflow (which generally will be dependent on Pandas DataFrames or NumPy arrays).
