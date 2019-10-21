@@ -264,4 +264,6 @@ As you can see, you have a list of dictionaries, in this case with only one entr
 
 ## Summary
 
-JSON files often have a deep, nested structure that can require initial investigation into the schema hierarchy in order to become familiar with how data is stored. Once done, it is important to identify what data you are looking to extract and then develop a strategy to transform it into your standard workflow (which generally will be dependent on Pandas DataFrames or NumPy arrays).
+JSON files often have a deep, nested structure that can require initial investigation into the schema hierarchy in order to become familiar with how data is stored. Once done, it is important to identify what data you are looking to extract and then develop a strategy to transform it into your standard workflow (which generally will be dependent on Pandas DataFrames or NumPy arrays). 
+
+In this lesson, you've seen how to load JSON files using the json module, how to explore these files to get to know their schema, and how to convert a JSON file to a pandas DataFrame.
