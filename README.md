@@ -1,4 +1,3 @@
-
 # Exploring and Transforming JSON Schemas
 
 ## Introduction
@@ -9,7 +8,7 @@ In this lesson, you'll formalize your knowledge for how to explore a JSON file w
 You will be able to:
 
 * Use the JSON module to load and parse JSON documents
-* Load and explore unknown JSON schemas
+* Explore and extract data using unknown JSON schemas
 * Convert JSON to a pandas dataframe
 
 
@@ -20,17 +19,13 @@ As before, you'll begin by importing the `json` package, opening a file with pyt
 
 ```python
 import json
-```
-
-
-```python
-f = open('output.json')
-data = json.load(f)
+with open('output.json') as f:
+    data = json.load(f)
 ```
 
 ## Exploring JSON Schemas  
 
-Recall that JSON files have a nested structure. The most granular level of raw data will be individual numbers (float/int) and strings. These, in turn, will be stored in the equivalent of python lists and dictionaries. Because these can be combined, you'll start exploring by checking the type of our root object and start mapping out the hierarchy of the JSON file.
+Recall that JSON files have a nested structure. The most granular level of raw data will be individual numbers (float/int) and strings. These, in turn, will be stored in the equivalent of Python lists and dictionaries. Because these can be combined, you'll start exploring by checking the type of our root object and start mapping out the hierarchy of the JSON file.
 
 
 ```python
@@ -58,7 +53,9 @@ data.keys()
 
 
 
-In this case, there is only a single key, 'albums', so you'll continue on down the pathway exploring and mapping out the hierarchy. Once again, start by checking the type of this nested data structure.
+In this case, there is only a single key, `'albums'`, so can continue exploring linearly without branching out.
+
+Once again, start by checking the type of this nested data structure.
 
 
 ```python
@@ -72,7 +69,7 @@ type(data['albums'])
 
 
 
-Another dictionary! So thus far, you have a dictionary within a dictionary. Once again, investigate what's within this dictionary (JSON calls the equivalent of Python dictionaries Objects.)
+Another dictionary! So thus far, you have a dictionary within a dictionary. Once again, investigate what's within this dictionary.
 
 
 ```python
@@ -160,7 +157,7 @@ data['albums']['items'][0].keys()
 
 
 ## Converting JSON to Alternative Data Formats
-As you can see, the nested structure continues on: our list of items is only 2 long, but each item is a dictionary with a large number of key-value pairs. To add context, this is actually the data that you're probably after from this file: its that data providing details about what albums were recently released. The entirety of the JSON file itself is an example response from the Spotify API (more on that soon). So while the larger JSON provides us with many details about the response itself, our primary interest may simply be the list of dictionaries within data -> albums -> items. Preview this and see if you can transform it into our usual Pandas DataFrame.
+As you can see, the nested structure continues on: our list of items is only 2 long, but each item is a dictionary with a large number of key-value pairs. To add context, this is actually the data that you're probably after from this file: its that data providing details about what albums were recently released. The entirety of the JSON file itself is an example response from the Spotify API (more on that soon). So while the larger JSON provides us with many details about the response itself, our primary interest may simply be the list of dictionaries within data -> albums -> items. Preview this and see if you can transform it into our usual pandas DataFrame.
 
 
 ```python
@@ -172,24 +169,24 @@ On first attempt, you might be tempted to pass the whole object to Pandas. Try a
 
 ```python
 df = pd.DataFrame(data['albums']['items'])
-df.head()
+df
 ```
 
 
 
 
 <div>
-<style>
-    .dataframe thead tr:only-child th {
-        text-align: right;
-    }
-
-    .dataframe thead th {
-        text-align: left;
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
     }
 
     .dataframe tbody tr th {
         vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
     }
 </style>
 <table border="1" class="dataframe">
@@ -241,11 +238,21 @@ df.head()
 
 
 
-Not bad, although you can see some of our cells still have nested data within them. The artists column in particular might be nice to break apart. You could do this from the original json, but at this point, let's work with our DataFrame. Preview an entry.
+Pandas DataFrames are mostly useful when we have fairly flat, tabular data. In this case, with a list of only two albums, we don't gain much information by displaying our data this way.
+
+## Extracting Data
+
+Now that we have some sense of what is in our dataset, we can extract some information that might be useful as part of a larger analysis.
+
+### What are the artist names?
+
+Although we don't have a schema available, we can see that each album contains a key `'artists'`. Let's explore that further.
 
 
 ```python
-df.artists.iloc[0]
+first_album = data['albums']['items'][0]
+
+first_album['artists']
 ```
 
 
@@ -260,10 +267,266 @@ df.artists.iloc[0]
 
 
 
-As you can see, you have a list of dictionaries, in this case with only one entry as theirs only one artist. You can imagine wanting to transform this for an artist1, artist2,...columns. This will be a great exercise in the upcoming lab to practice your Pandas skills and lambda functions!
+That's a list of dictionaries. To convert it to a list of strings, that would be something like this:
+
+
+```python
+first_album_artists = [artist['name'] for artist in first_album['artists']]
+first_album_artists
+```
+
+
+
+
+    ['Pharrell Williams']
+
+
+
+If we wanted to do the same for all albums in the dataset, that would be something like this:
+
+
+```python
+artists_by_album = [[artist['name'] for artist in album['artists']] for album in data['albums']['items']]
+artists_by_album
+```
+
+
+
+
+    [['Pharrell Williams'], ['Drake']]
+
+
+
+That same logic, without list comprehensions:
+
+
+```python
+# Make an empty list to hold the overall data
+artists_by_album = []
+
+# Loop over the list of dictionaries containing album info
+for album in data['albums']['items']:
+    # Make a list to contain the artist names for this album
+    artist_names = []
+    # Loop over the list of dictionaries containing artist info
+    for artist in album['artists']:
+        # Add the artist name to the list of artist names
+        artist_names.append(artist['name'])
+    # Add the list of artists for this album to the overall list
+    artists_by_album.append(artist_names)
+    
+artists_by_album
+```
+
+
+
+
+    [['Pharrell Williams'], ['Drake']]
+
+
+
+That same logic using the dataframe would be:
+
+
+```python
+def extract_artist_names(record):
+    return [artist['name'] for artist in record]
+```
+
+
+```python
+df["artists"].apply(extract_artist_names)
+```
+
+
+
+
+    0    [Pharrell Williams]
+    1                [Drake]
+    Name: artists, dtype: object
+
+
+
+### How many available markets are there per album?
+
+We see that one of the keys each album has is `'available_markets'`. Let's look at it:
+
+
+```python
+first_album['available_markets']
+```
+
+
+
+
+    ['AD',
+     'AR',
+     'AT',
+     'AU',
+     'BE',
+     'BG',
+     'BO',
+     'BR',
+     'CA',
+     'CH',
+     'CL',
+     'CO',
+     'CR',
+     'CY',
+     'CZ',
+     'DE',
+     'DK',
+     'DO',
+     'EC',
+     'EE',
+     'ES',
+     'FI',
+     'FR',
+     'GB',
+     'GR',
+     'GT',
+     'HK',
+     'HN',
+     'HU',
+     'ID',
+     'IE',
+     'IS',
+     'IT',
+     'JP',
+     'LI',
+     'LT',
+     'LU',
+     'LV',
+     'MC',
+     'MT',
+     'MX',
+     'MY',
+     'NI',
+     'NL',
+     'NO',
+     'NZ',
+     'PA',
+     'PE',
+     'PH',
+     'PL',
+     'PT',
+     'PY',
+     'SE',
+     'SG',
+     'SK',
+     'SV',
+     'TR',
+     'TW',
+     'US',
+     'UY']
+
+
+
+It appears we have a list of strings. So all we need to do is to count the length of that list for each album.
+
+
+```python
+available_market_counts = [len(album['available_markets']) for album in data['albums']['items']]
+available_market_counts
+```
+
+
+
+
+    [60, 57]
+
+
+
+Again, it would be possible to do this using pandas instead:
+
+
+```python
+df["available_markets"].apply(len)
+```
+
+
+
+
+    0    60
+    1    57
+    Name: available_markets, dtype: int64
+
+
+
+### What is the medium-sized image associated with each album?
+
+We see that the `'images'` key is associated with a list of dictionaries:
+
+
+```python
+first_album['images']
+```
+
+
+
+
+    [{'height': 640,
+      'url': 'https://i.scdn.co/image/e6b635ebe3ef4ba22492f5698a7b5d417f78b88a',
+      'width': 640},
+     {'height': 300,
+      'url': 'https://i.scdn.co/image/92ae5b0fe64870c09004dd2e745a4fb1bf7de39d',
+      'width': 300},
+     {'height': 64,
+      'url': 'https://i.scdn.co/image/8a7ab6fc2c9f678308ba0f694ecd5718dc6bc930',
+      'width': 64}]
+
+
+
+Let's use IPython to display the image with `'height'` 300 for each album.
+
+
+```python
+from IPython.display import Image
+
+for album in data['albums']['items']:
+    for image in album['images']:
+        if image['height'] == 300:
+            loaded_image = Image(url=image['url'])
+            display(loaded_image)
+```
+
+
+<img src="https://i.scdn.co/image/92ae5b0fe64870c09004dd2e745a4fb1bf7de39d"/>
+
+
+
+<img src="https://i.scdn.co/image/dff06a3375f6d9b32ecb081eb9a60bbafecb5731"/>
+
+
+Once again, the same logic would be possible with pandas:
+
+
+```python
+def extract_medium_images(record):
+    images = pd.DataFrame(record)
+    medium_image = images[images["height"] == 300]["url"].values[0]
+    return medium_image
+    
+def display_image(record):
+    loaded_image = Image(url=record)
+    display(loaded_image)
+```
+
+
+```python
+df["images"].apply(extract_medium_images).apply(display_image);
+```
+
+
+<img src="https://i.scdn.co/image/92ae5b0fe64870c09004dd2e745a4fb1bf7de39d"/>
+
+
+
+<img src="https://i.scdn.co/image/dff06a3375f6d9b32ecb081eb9a60bbafecb5731"/>
+
+
+As you can see, once we have explored the schema somewhat, there are a lot of different things we can extract from this dataset. You will get more practice with these skills in the upcoming lab!
 
 ## Summary
 
-JSON files often have a deep, nested structure that can require initial investigation into the schema hierarchy in order to become familiar with how data is stored. Once done, it is important to identify what data you are looking to extract and then develop a strategy to transform it into your standard workflow (which generally will be dependent on Pandas DataFrames or NumPy arrays). 
-
-In this lesson, you've seen how to load JSON files using the json module, how to explore these files to get to know their schema, and how to convert a JSON file to a pandas DataFrame.
+JSON files often have a deep, nested structure that can require initial investigation into the schema hierarchy in order to become familiar with how data is stored. Once done, it is important to identify what data you are looking to extract and then develop a strategy to transform it using your standard workflow. 
