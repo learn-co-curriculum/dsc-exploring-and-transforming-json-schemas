@@ -84,7 +84,7 @@ data['albums'].keys()
 
 
 At this point, things are starting to look something like this: 
-<img src="images/json_diagram1.JPG" width=550>
+<img src="https://raw.github.com/learn-co-curriculum/dsc-exploring-and-transforming-json-schemas/master/images/json_diagram1.JPG" width=550>
 
 At this point, if you were to continue checking individual data types, you have a lot to go through. To simplify this, you can use a for loop:
 
@@ -104,7 +104,7 @@ for key in data['albums'].keys():
 
 
 Adding this to our diagram we now have something like this:
-<img src="images/json_diagram2.JPG" width=550>
+<img src="https://raw.github.com/learn-co-curriculum/dsc-exploring-and-transforming-json-schemas/master/images/json_diagram2.JPG" width=550>
 
 Normally, you may not draw out the full diagram as done here, but it's a useful picture to have in mind, and in complex schemas, can be useful to map out. At this point, you also probably have a good idea of the general structure of the JSON file. However, there is still the list of items, which we could investigate further:
 
