@@ -25,7 +25,7 @@ with open('output.json') as f:
 
 ## Exploring JSON Schemas  
 
-Recall that JSON files have a nested structure. The most granular level of raw data will be individual numbers (float/int) and strings. These, in turn, will be stored in the equivalent of Python lists and dictionaries. Because these can be combined, you'll start exploring by checking the type of our root object and start mapping out the hierarchy of the JSON file.
+JSON files have a nested structure. The most granular level of raw data will be individual numbers (float/int) and strings. These, in turn, will be stored in the equivalent of Python lists and dictionaries. Because these can be combined, you'll start exploring by checking the type of our root object and start mapping out the hierarchy of the JSON file.
 
 
 ```python
@@ -69,7 +69,7 @@ type(data['albums'])
 
 
 
-Another dictionary! So thus far, you have a dictionary within a dictionary. Once again, investigate what's within this dictionary.
+Another dictionary. So thus far, you have a dictionary within a dictionary. Once again, investigate what's within this dictionary.
 
 
 ```python
@@ -84,8 +84,7 @@ data['albums'].keys()
 
 
 At this point, things are starting to look something like this: 
-
-<img src="https://raw.github.com/learn-co-curriculum/dsc-exploring-and-transforming-json-schemas/master/images/json_diagram1.JPG" width=550>
+<img src="images/json_diagram1.JPG" width=550>
 
 At this point, if you were to continue checking individual data types, you have a lot to go through. To simplify this, you can use a for loop:
 
@@ -105,8 +104,7 @@ for key in data['albums'].keys():
 
 
 Adding this to our diagram we now have something like this:
-
-<img src="https://raw.github.com/learn-co-curriculum/dsc-exploring-and-transforming-json-schemas/master/images/json_diagram2.JPG" width=550>
+<img src="images/json_diagram2.JPG" width=550>
 
 Normally, you may not draw out the full diagram as done here, but it's a useful picture to have in mind, and in complex schemas, can be useful to map out. At this point, you also probably have a good idea of the general structure of the JSON file. However, there is still the list of items, which we could investigate further:
 
@@ -159,7 +157,7 @@ data['albums']['items'][0].keys()
 
 
 ## Converting JSON to Alternative Data Formats
-As you can see, the nested structure continues on: our list of items is only 2 long, but each item is a dictionary with a large number of key-value pairs. To add context, this is actually the data that you're probably after from this file: its that data providing details about what albums were recently released. The entirety of the JSON file itself is an example response from the Spotify API (more on that soon). So while the larger JSON provides us with many details about the response itself, our primary interest may simply be the list of dictionaries within data -> albums -> items. Preview this and see if you can transform it into our usual pandas DataFrame.
+As you can see, the nested structure continues on: our list of items is only 2 long, but each item is a dictionary with a large number of key-value pairs. To add context, this is actually the data that you're probably after from this file: its that data providing details about what albums were recently released. The entirety of the JSON file itself is an example response from the Spotify API. So while the larger JSON provides us with many details about the response itself, our primary interest may simply be the list of dictionaries within data -> albums -> items. Preview this and see if you can transform it into our usual pandas DataFrame.
 
 
 ```python
@@ -527,7 +525,7 @@ df["images"].apply(extract_medium_images).apply(display_image);
 <img src="https://i.scdn.co/image/dff06a3375f6d9b32ecb081eb9a60bbafecb5731"/>
 
 
-As you can see, once we have explored the schema somewhat, there are a lot of different things we can extract from this dataset. You will get more practice with these skills in the upcoming lab!
+As you can see, once we have explored the schema somewhat, there are a lot of different things we can extract from this dataset.
 
 ## Summary
 
